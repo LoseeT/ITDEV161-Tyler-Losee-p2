@@ -9,13 +9,13 @@ const Register = ({ authenticateUser }) => {
     email: '',
     password: '',
     passwordConfirm: '',
-    phone: '', // Add phone field
-    state: '' // Add state field
+    phone: '', 
+    state: '' 
   });
 
   const [errorData, setErrorData] = useState({ errors: null });
   
-  const { name, email, password, passwordConfirm, phone, state } = userData; // Destructure new fields
+  const { name, email, password, passwordConfirm, phone, state } = userData; 
   const { errors } = errorData;
 
   const onChange = e => {
@@ -35,8 +35,8 @@ const Register = ({ authenticateUser }) => {
         name: name,
         email: email,
         password: password,
-        phone: phone, // Include phone
-        state: state  // Include state
+        phone: phone, 
+        state: state  
       }
 
       try {
@@ -49,11 +49,11 @@ const Register = ({ authenticateUser }) => {
         const body = JSON.stringify(newUser);
         const res = await axios.post('http://localhost:3000/api/users', body, config);
         
-        // Store user data and redirect
+        
         localStorage.setItem('token', res.data.token);
         navigate('/');
       } catch (error) {
-        // Clear user data and set errors
+        
         localStorage.removeItem('token');
         
         setErrorData({
@@ -111,7 +111,7 @@ const Register = ({ authenticateUser }) => {
           placeholder='Phone'
           name='phone'
           value={phone}
-          onChange={e => onChange(e)} // Add onChange handler for phone
+          onChange={e => onChange(e)} 
         />
       </div>
       <div>
@@ -120,7 +120,7 @@ const Register = ({ authenticateUser }) => {
           placeholder='State'
           name='state'
           value={state}
-          onChange={e => onChange(e)} // Add onChange handler for state
+          onChange={e => onChange(e)} 
         />
       </div>
       <div>

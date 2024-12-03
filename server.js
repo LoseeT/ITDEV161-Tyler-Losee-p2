@@ -9,17 +9,17 @@ import User from './models/User';
 import Post from './models/Post';
 import auth from './middleware/auth';
 
-// Initialize express application
+
 const app = express();
 
-// Connect database
+
 connectDatabase();
 
-// Configure Middleware
+
 app.use(express.json({ extended: false }));
 app.use(cors({ origin: 'http://localhost:3000'}));
 
-// API endpoints
+
 app.get('/', (req, res) => 
     res.send('http get request sent to root api endpoint')
 );
@@ -59,7 +59,7 @@ app.post('/api/users',
             .json({ errors: [{ msg: 'User already exists'}] });
         }
 
-        // Create a new user
+
         user = new User({
           name: name,
           email: email,
@@ -68,14 +68,14 @@ app.post('/api/users',
           state: state
         });
 
-        // Encrypt the password
+
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
 
-        // Save to the db and return
+
         await user.save();
         
-        // Generate and return a JWT token
+
         returnToken(user, res);
       } catch (error) {
         res.status(500).send('Server error');
@@ -113,7 +113,7 @@ app.post(
     } else {
       const { email, password } = req.body;
       try {
-        // Check if user exists
+        
         let user = await User.findOne({ email: email });
         if (!user) {
           return res
@@ -121,7 +121,7 @@ app.post(
             .json({ errors: [{ msg: 'Invalid email or password' }] });
         }
 
-        // Check password
+
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
           return res
@@ -129,7 +129,7 @@ app.post(
             .json({ errors: [{ msg: 'Invalid email or password' }] });
         }
 
-        // Generate and return a JWT token
+
         returnToken(user, res);
       } catch (error) {
         res.status(500).send('Server error');
@@ -157,7 +157,7 @@ const returnToken = (user, res) => {
 };
 
 
-// Post endpoints
+
 /**
  * @route POST api/posts
  * @desc Create post
@@ -182,17 +182,17 @@ app.post(
     } else {
       const { title, body } = req.body;
       try {
-        // Get the user who created the post
+       
         const user = await User.findById(req.user.id);
 
-        // Create a new post
+
         const post = new Post({
           user: user.id,
           title: title,
           body: body
         });
 
-        // Save to the db and return
+
         await post.save();
 
         res.json(post);
@@ -247,12 +247,12 @@ app.delete('/api/posts/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Make sure the post was found
+
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });
     }
 
-    // Make sure the request user created the post
+
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
@@ -275,17 +275,17 @@ app.put('/api/posts/:id', auth, async (req, res) => {
     const { title, body } = req.body;
     const post = await Post.findById(req.params.id);
 
-    // Make sure the post was found
+
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });
     }
 
-    // Make sure the request user created the post
+
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    // Update the post and return
+
     post.title = title || post.title;
     post.body = body || post.body;
 
@@ -299,7 +299,7 @@ app.put('/api/posts/:id', auth, async (req, res) => {
 });
 
 
-// Connection listener
+
 const port = 3000;
 app.listen(port, () => console.log(`Express server running on port ${port}`));
 

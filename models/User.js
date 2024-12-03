@@ -16,11 +16,11 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true  // Make phone number required
+    required: true  
   },
   state: {
     type: String,
-    required: true  // Make state required
+    required: true  
   }
 });
 
