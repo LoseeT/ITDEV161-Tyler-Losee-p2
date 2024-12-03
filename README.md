@@ -1,3 +1,3 @@
-# mike-hunsicker
+# Tyler-Losee
 
 Updated readme
